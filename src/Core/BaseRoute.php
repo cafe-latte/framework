@@ -160,6 +160,11 @@ class BaseRoute
                 $e->getCode() ? $bodyCode = $e->getCode() : $bodyCode = 2000;
                 $e->getMessage() ? $bodyMessage = $e->getMessage() : $bodyMessage = null;
                 $this->result = $this->response->setResponseType("json")->setResponseStatusCode(400)->setBodyCode($bodyCode)->addMessage($bodyMessage)->run();
+            } catch (\TypeError $e) {
+                $this->log->emergency($e, []);
+                $e->getCode() ? $bodyCode = $e->getCode() : $bodyCode = 2000;
+                $e->getMessage() ? $bodyMessage = $e->getMessage() : $bodyMessage = null;
+                $this->result = $this->response->setResponseType("json")->setResponseStatusCode(400)->setBodyCode($bodyCode)->addMessage($bodyMessage)->run();                
             } catch (\Exception $e) {
                 $this->log->emergency($e, []);
                 $e->getCode() ? $bodyCode = $e->getCode() : $bodyCode = 2000;
