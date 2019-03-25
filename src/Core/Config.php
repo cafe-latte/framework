@@ -44,6 +44,7 @@ class Config
             define("LOG_LEVEL", $setting['log']['level']);
             define("LOG_PATH", $setting['log']['path']);
 
+
             define("VIEW_PATH_PHP", $setting['project']['path'] . $setting['template']['output']);
             define("VIEW_PATH_HTML", $setting['project']['path'] . $setting['template']['input']);
 
