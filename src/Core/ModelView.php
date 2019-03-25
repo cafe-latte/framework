@@ -30,13 +30,18 @@ class ModelView
     /**
      * to add view data
      *
-     * @param string $key
+     * @param $key
      * @param $value
      * @return $this
      */
-    public function addViewData(string $key, $value)
+    public function addViewData($key, $value)
     {
-        $this->modelVar[$key] = $value;
+        if ($key) {
+            $this->modelVar[$key] = $value;
+        } else {
+            $this->modelVar = $value;
+        }
+
         return $this;
     }
 
