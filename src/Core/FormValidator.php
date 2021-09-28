@@ -140,6 +140,22 @@ class FormValidator
         return $this;
     }
 
+    /**
+     * check min / max length
+     *
+     * @param int $min
+     * @param int $max
+     * @return $this
+     */
+    public function setMinMaxValue(int $min, int $max): FormValidator
+    {
+        if ($min > $this->inputValue or $this->inputValue > $max) {
+            throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' 의 길이값 부족또는 초과");
+        }
+
+        return $this;
+    }
+
 
     /**
      * WEb Security. protect CSRF, XSS etc.
