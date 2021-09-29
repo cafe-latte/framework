@@ -227,6 +227,11 @@ class FormValidator
                 case 'url':
                     $filter = FILTER_VALIDATE_URL;
                     break;
+                case 'string':
+                    if (!preg_match('/^[A-Za-z0-9_-]*$/', $this->inputValue)) {
+                      throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed");
+                    }
+                    break;
                 case 'json':
                     if (!is_array(\json_decode($this->inputValue, true)) == true) {
                         throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed");
