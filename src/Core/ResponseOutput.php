@@ -119,7 +119,11 @@ class ResponseOutput
 
                 if ($this->responseStatusCode == 200) {
                     if ($this->isDisplayCode == true) {
-                        return json_encode(array('code' => $this->bodyCode, 'message' => "{$this->bodyMessage}{$this->bodyAddMessage}", 'body' => $this->bodyData),JSON_UNESCAPED_UNICODE);
+                        if (!$this->bodyData) {
+                            return json_encode(array('code' => $this->bodyCode, 'message' => "{$this->bodyMessage}{$this->bodyAddMessage}"),JSON_UNESCAPED_UNICODE);
+                        } else {
+                            return json_encode(array('code' => $this->bodyCode, 'message' => "{$this->bodyMessage}{$this->bodyAddMessage}", 'body' => $this->bodyData),JSON_UNESCAPED_UNICODE);
+                        }
                     } else {
                         return json_encode($this->bodyData,JSON_UNESCAPED_UNICODE);
                     }
