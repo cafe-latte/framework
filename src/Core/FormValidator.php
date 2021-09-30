@@ -228,19 +228,32 @@ class FormValidator
                     $filter = FILTER_VALIDATE_URL;
                     break;
                 case 'string':
-                    if (!preg_match('/^[A-Za-z0-9_-]*$/', $this->inputValue)) {
-                      throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed");
+                    if (is_null($this->inputValue)) {
+                      throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Null)");
+                    }
+                    if (empty($this->inputValue)) {
+                      throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Empty)");
                     }
                     break;
-                case 'json':
+                case 'null':
+                    if (is_null($this->inputValue)) {
+                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Is Null)");
+                    }
+                  break;
+                case 'empty':
+                    if (empty($this->inputValue)) {
+                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Is Null)");
+                    }
+                  break;
+              case 'json':
                     if (!is_array(\json_decode($this->inputValue, true)) == true) {
-                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed");
+                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Json)");
                     }
                     $filter = "";
                     break;
                 case 'array':
                     if (!is_array($this->inputValue)) {
-                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed");
+                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Array)");
                     }
                     $filter = "";
                     break;
