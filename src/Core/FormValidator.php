@@ -134,7 +134,7 @@ class FormValidator
     public function setMinMaxLength(int $min, int $max)
     {
         if ($min > strlen($this->inputValue) or strlen($this->inputValue) > $max) {
-            throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' 의 길이값 부족또는 초과");
+            throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' 의 길이(length)가 작거나 초과 ( {$min} ~ {$max} )");
         }
 
         return $this;
@@ -150,7 +150,7 @@ class FormValidator
     public function setMinMaxValue(int $min, int $max): FormValidator
     {
         if ($min > $this->inputValue or $this->inputValue > $max) {
-            throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' 의 길이값 부족또는 초과");
+            throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' 의 값(value)이 작거나 초과 ( {$min} ~ {$max} )");
         }
 
         return $this;
