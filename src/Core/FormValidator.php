@@ -237,7 +237,7 @@ class FormValidator
                     break;
                 case 'file':
                     if ($this->inputValue['size'] == 0) {
-                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Null)");
+                        throw new InvalidParameterException("[] : '" . $this->inputValue . "' Not Allowed(Empty Array)");
                     }
                     break;
                 case 'null':
