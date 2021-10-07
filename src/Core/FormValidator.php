@@ -29,9 +29,9 @@ class FormValidator
 
     private $format;
 
-    private $regExes = Array(
-        'number' => "^[-]?[0-9,]+\$",
-        'string' => "^[\\d\\D]{1,}\$",
+    private $regExes = array(
+            'number' => "^[-]?[0-9,]+\$",
+            'string' => "^[\\d\\D]{1,}\$",
     );
 
     /**
@@ -229,23 +229,28 @@ class FormValidator
                     break;
                 case 'string':
                     if (is_null($this->inputValue)) {
-                      throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Null)");
+                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Null)");
                     }
                     if (empty($this->inputValue)) {
-                      throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Empty)");
+                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Empty)");
+                    }
+                    break;
+                case 'file':
+                    if ($this->inputValue['size'] == 0) {
+                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Null)");
                     }
                     break;
                 case 'null':
                     if (is_null($this->inputValue)) {
                         throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Is Null)");
                     }
-                  break;
+                    break;
                 case 'empty':
                     if (empty($this->inputValue)) {
                         throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Is Null)");
                     }
-                  break;
-              case 'json':
+                    break;
+                case 'json':
                     if (!is_array(\json_decode($this->inputValue, true)) == true) {
                         throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Json)");
                     }
