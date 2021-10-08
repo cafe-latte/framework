@@ -254,7 +254,7 @@ class FormValidator
                     }
                     break;
                 case 'enum':
-                    if (in_array($this->inputValue,$this->enum)) {
+                    if (!in_array($this->inputValue,$this->enum)) {
                         throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Json)");
                     }
                     break;
