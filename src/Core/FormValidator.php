@@ -119,11 +119,8 @@ class FormValidator
      * @param mixed $rule
      * @return $this
      */
-    public function setRule(array $rule)
+    public function setRule($rule)
     {
-        if (!is_array($rule) == true) {
-            throw new InvalidParameterException("enum Rule must be array");
-        }
         $this->rule = $rule;
 
         return $this;
@@ -169,8 +166,10 @@ class FormValidator
      */
     public function setEnum(array $value): FormValidator
     {
+        if (!is_array($value) == true) {
+          throw new InvalidParameterException("enum Rule must be array");
+        }
         $this->enum = $value;
-
         return $this;
     }
 
