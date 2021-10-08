@@ -29,6 +29,8 @@ class FormValidator
 
     private $format;
 
+    private $enum;
+
     private $regExes = array(
             'number' => "^[-]?[0-9,]+\$",
             'string' => "^[\\d\\D]{1,}\$",
@@ -117,8 +119,11 @@ class FormValidator
      * @param mixed $rule
      * @return $this
      */
-    public function setRule($rule)
+    public function setRule(array $rule)
     {
+        if (!is_array($rule) == true) {
+            throw new InvalidParameterException("enum Rule must be array");
+        }
         $this->rule = $rule;
 
         return $this;
@@ -152,6 +157,19 @@ class FormValidator
         if ($min > $this->inputValue or $this->inputValue > $max) {
             throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' 의 값(value)이 작거나 초과 ( {$min} ~ {$max} )");
         }
+
+        return $this;
+    }
+
+    /**
+     * check min / max length
+     *
+     * @param array $value
+     * @return $this
+     */
+    public function setEnum(array $value): FormValidator
+    {
+        $this->enum = $value;
 
         return $this;
     }
@@ -233,6 +251,11 @@ class FormValidator
                     }
                     if (empty($this->inputValue)) {
                         throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Empty)");
+                    }
+                    break;
+                case 'enum':
+                    if (in_array($this->inputValue,$this->enum)) {
+                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Json)");
                     }
                     break;
                 case 'file':
