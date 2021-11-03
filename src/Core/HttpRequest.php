@@ -25,52 +25,52 @@ class HttpRequest implements HttpRequestInterface
     /**
      * HTTP Get
      */
-    private $get;
+    public $get;
 
     /**
      * HTTP Post..
      */
-    private $post;
+    public $post;
 
     /**
      * HTTP Delete
      */
-    private $delete;
+    public $delete;
 
     /**
      * HTTP Put
      */
-    private $put;
+    public $put;
 
     /**
      * HTTP Headers
      */
-    private $header;
+    public $header;
 
     /**
      * HTTP cookie
      */
-    private $cookie;
+    public $cookie;
 
     /**
      * HTTP session
      */
-    private $session;
+    public $session;
 
     /**
      * HTTP Server
      */
-    private $server;
+    public $server;
 
     /**
      * Json Data
      */
-    private $config;
+    public $config;
 
     /**
      * HTTP Attach File
      */
-    private $file;
+    public $file;
 
     /**
      * @var LoggerInterface
@@ -252,7 +252,6 @@ class HttpRequest implements HttpRequestInterface
                 $this->get->$k = $this->setSecurityLevel($v);
                 $this->parameters["get"][$k] = $this->setSecurityLevel($v);
             }
-            unset($_GET);
         }
     }
 
@@ -287,7 +286,6 @@ class HttpRequest implements HttpRequestInterface
                     $this->post->$k = $this->setSecurityLevel($v);
                     $this->parameters["post"][$k] = $this->setSecurityLevel($v);
                 }
-                unset($_GET);
             }
         }
 
@@ -310,7 +308,6 @@ class HttpRequest implements HttpRequestInterface
                 $this->post->raw = $rawData;
             }
 
-            unset($_POST);
         }
     }
 
@@ -326,7 +323,6 @@ class HttpRequest implements HttpRequestInterface
                     $this->put->$k = $this->setSecurityLevel($v);
                     $this->parameters["put"][$k] = $this->setSecurityLevel($v);
                 }
-                unset($_GET);
             }
 
             $rawData = file_get_contents("php://input");
@@ -356,7 +352,6 @@ class HttpRequest implements HttpRequestInterface
                     $this->delete->$k = $this->setSecurityLevel($v);
                     $this->parameters["delete"][$k] = $this->setSecurityLevel($v);
                 }
-                unset($_GET);
             }
 
             $rawData = file_get_contents("php://input");
@@ -389,7 +384,6 @@ class HttpRequest implements HttpRequestInterface
                 $this->file->$k = $this->setSecurityLevel($v);
                 $this->parameters["file"][$k] = $this->setSecurityLevel($v);
             }
-            unset($_FILES);
         }
     }
 
@@ -405,7 +399,6 @@ class HttpRequest implements HttpRequestInterface
                 $this->cookie->$k = $this->setSecurityLevel($v);
                 $this->parameters["cookie"][$k] = $this->setSecurityLevel($v);
             }
-            unset($_COOKIE);
         }
     }
 
@@ -432,7 +425,6 @@ class HttpRequest implements HttpRequestInterface
                 $this->server->$k = $v;
                 $this->parameters["server"][$k] = $v;
             }
-            unset($_SERVER);
         }
     }
 

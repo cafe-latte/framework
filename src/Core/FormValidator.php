@@ -27,7 +27,9 @@ class FormValidator
 
     private $rule;
 
-    private $format;
+    public $redirectUrl;
+
+    public  $format;
 
     private $enum;
 
@@ -112,8 +114,22 @@ class FormValidator
         return $this;
     }
 
-
     /**
+     * If params failed, move to the url
+     * @param string $url
+     * @return $this
+     */
+    public function setValidationFailUrl(string $url)
+    {
+      if (!$this->inputValue) {
+          $this->redirectUrl = $url;
+      }
+
+       return $this;
+    }
+
+
+  /**
      * set rule.
      *
      * @param mixed $rule
@@ -136,11 +152,17 @@ class FormValidator
     public function setMinMaxLength(int $min, int $max)
     {
         if ($min > strlen($this->inputValue) or strlen($this->inputValue) > $max) {
+            if ($this->redirectUrl) {
+              header("Location: {$this->redirectUrl}");
+              exit;
+            }
             throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' 의 길이(length)가 작거나 초과 ( {$min} ~ {$max} )");
         }
 
         return $this;
     }
+
+
 
     /**
      * check min / max length
@@ -152,6 +174,10 @@ class FormValidator
     public function setMinMaxValue(int $min, int $max): FormValidator
     {
         if ($min > $this->inputValue or $this->inputValue > $max) {
+            if ($this->redirectUrl) {
+              header("Location: {$this->redirectUrl}");
+              exit;
+            }
             throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' 의 값(value)이 작거나 초과 ( {$min} ~ {$max} )");
         }
 
@@ -220,9 +246,15 @@ class FormValidator
         if ($isValidate == true) {
             if (array_key_exists($this->rule, $this->regExes)) {
                 if (filter_var($this->inputValue, FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => '!' . $this->regExes[$this->rule] . '!i'))) == false) {
+                    if ($this->redirectUrl) {
+                      header("Location: {$this->redirectUrl}");
+                      exit;
+                    }
                     throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed");
                 }
             }
+
+            $filter = null;
 
             switch ($this->rule) {
                 case 'boolean':
@@ -246,40 +278,72 @@ class FormValidator
                     break;
                 case 'string':
                     if (is_null($this->inputValue)) {
+                        if ($this->redirectUrl) {
+                          header("Location: {$this->redirectUrl}");
+                          exit;
+                        }
                         throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Null)");
                     }
                     if (empty($this->inputValue)) {
+                        if ($this->redirectUrl) {
+                          header("Location: {$this->redirectUrl}");
+                          exit;
+                        }
                         throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Empty)");
                     }
                     break;
                 case 'enum':
                     if (!in_array($this->inputValue,$this->enum)) {
+                        if ($this->redirectUrl) {
+                          header("Location: {$this->redirectUrl}");
+                          exit;
+                        }
                         throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Json)");
                     }
                     break;
                 case 'file':
                     if ($this->inputValue['size'] == 0) {
+                        if ($this->redirectUrl) {
+                          header("Location: {$this->redirectUrl}");
+                          exit;
+                        }
                         throw new InvalidParameterException("[] : '" . $this->inputValue . "' Not Allowed(Empty Array)");
                     }
                     break;
                 case 'null':
                     if (is_null($this->inputValue)) {
+                        if ($this->redirectUrl) {
+                          header("Location: {$this->redirectUrl}");
+                          exit;
+                        }
                         throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Is Null)");
                     }
                     break;
                 case 'empty':
                     if (empty($this->inputValue)) {
+                        if ($this->redirectUrl) {
+                          header("Location: {$this->redirectUrl}");
+                          exit;
+                        }
                         throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Is Null)");
                     }
                     break;
                 case 'json':
                     if (!is_array(\json_decode($this->inputValue, true)) == true) {
+                        if ($this->redirectUrl) {
+                          header("Location: {$this->redirectUrl}");
+                          exit;
+                        }
                         throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Json)");
                     }
                     $filter = "";
                     break;
                 case 'array':
                     if (!is_array($this->inputValue)) {
+                        if ($this->redirectUrl) {
+                          header("Location: {$this->redirectUrl}");
+                          exit;
+                        }
                         throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Array)");
                     }
                     $filter = "";
@@ -291,6 +355,10 @@ class FormValidator
 
             if ($filter) {
                 if (filter_var($this->inputValue, $filter) === false) {
+                    if ($this->redirectUrl) {
+                      header("Location: {$this->redirectUrl}");
+                      exit;
+                    }
                     throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed");
                 }
             }
