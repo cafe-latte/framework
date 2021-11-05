@@ -29,13 +29,13 @@ class FormValidator
 
     public $redirectUrl;
 
-    public  $format;
+    public $format;
 
     private $enum;
 
     private $regExes = array(
-            'number' => "^[-]?[0-9,]+\$",
-            'string' => "^[\\d\\D]{1,}\$",
+        'number' => "^[-]?[0-9,]+\$",
+        'string' => "^[\\d\\D]{1,}\$",
     );
 
     /**
@@ -121,15 +121,15 @@ class FormValidator
      */
     public function setValidationFailUrl(string $url)
     {
-      if (!$this->inputValue) {
-          $this->redirectUrl = $url;
-      }
+        if ($url) {
+            $this->redirectUrl = $url;
+        }
 
-       return $this;
+        return $this;
     }
 
 
-  /**
+    /**
      * set rule.
      *
      * @param mixed $rule
@@ -152,16 +152,16 @@ class FormValidator
     public function setMinMaxLength(int $min, int $max)
     {
         if ($min > strlen($this->inputValue) or strlen($this->inputValue) > $max) {
+            $errorMessage = $this->inputKey . " : '" . $this->inputValue . "' 의 길이(length)가 작거나 초과 ( {$min} ~ {$max} )";
             if ($this->redirectUrl) {
-              header("Location: {$this->redirectUrl}");
-              exit;
+                echo "<script>location.href = '{$this->redirectUrl}?code=400&error_name=InvalidParameterException&message={$errorMessage}';</script>";
+                exit;
             }
-            throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' 의 길이(length)가 작거나 초과 ( {$min} ~ {$max} )");
+            throw new InvalidParameterException($errorMessage);
         }
 
         return $this;
     }
-
 
 
     /**
@@ -174,11 +174,12 @@ class FormValidator
     public function setMinMaxValue(int $min, int $max): FormValidator
     {
         if ($min > $this->inputValue or $this->inputValue > $max) {
+            $errorMessage = $this->inputKey . " : '" . $this->inputValue . "' 의 값(value)이 작거나 초과 ( {$min} ~ {$max} )";
             if ($this->redirectUrl) {
-              header("Location: {$this->redirectUrl}");
-              exit;
+                echo "<script>location.href = '{$this->redirectUrl}?code=400&error_name=InvalidParameterException&message={$errorMessage}';</script>";
+                exit;
             }
-            throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' 의 값(value)이 작거나 초과 ( {$min} ~ {$max} )");
+            throw new InvalidParameterException($errorMessage);
         }
 
         return $this;
@@ -193,7 +194,12 @@ class FormValidator
     public function setEnum(array $value): FormValidator
     {
         if (!is_array($value) == true) {
-          throw new InvalidParameterException("enum Rule must be array");
+            $errorMessage = "enum Rule must be array";
+            if ($this->redirectUrl) {
+                echo "<script>location.href = '{$this->redirectUrl}?code=400&error_name=InvalidParameterException&message={$errorMessage}';</script>";
+                exit;
+            }
+            throw new InvalidParameterException($errorMessage);
         }
         $this->enum = $value;
         return $this;
@@ -245,12 +251,13 @@ class FormValidator
 
         if ($isValidate == true) {
             if (array_key_exists($this->rule, $this->regExes)) {
+                $errorMessage = $this->inputKey . " : '" . $this->inputValue . "' Not Allowed";
                 if (filter_var($this->inputValue, FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => '!' . $this->regExes[$this->rule] . '!i'))) == false) {
                     if ($this->redirectUrl) {
-                      header("Location: {$this->redirectUrl}");
-                      exit;
+                        echo "<script>location.href = '{$this->redirectUrl}?code=400&error_name=InvalidParameterException&message={$errorMessage}';</script>";
+                        exit;
                     }
-                    throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed");
+                    throw new InvalidParameterException($errorMessage);
                 }
             }
 
@@ -278,73 +285,81 @@ class FormValidator
                     break;
                 case 'string':
                     if (is_null($this->inputValue)) {
+                        $errorMessage = $this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Null)";
                         if ($this->redirectUrl) {
-                          header("Location: {$this->redirectUrl}");
-                          exit;
+                            echo "<script>location.href = '{$this->redirectUrl}?code=400&error_name=InvalidParameterException&message={$errorMessage}';</script>";
+                            exit;
                         }
-                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Null)");
+                        throw new InvalidParameterException($errorMessage);
                     }
                     if (empty($this->inputValue)) {
+                        $errorMessage = $this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Empty)";
                         if ($this->redirectUrl) {
-                          header("Location: {$this->redirectUrl}");
-                          exit;
+                            echo "<script>location.href = '{$this->redirectUrl}?code=400&error_name=InvalidParameterException&message={$errorMessage}';</script>";
+                            exit;
                         }
-                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Empty)");
+                        throw new InvalidParameterException($errorMessage);
                     }
                     break;
                 case 'enum':
-                    if (!in_array($this->inputValue,$this->enum)) {
+                    if (!in_array($this->inputValue, $this->enum)) {
+                        $errorMessage = $this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Json)";
                         if ($this->redirectUrl) {
-                          header("Location: {$this->redirectUrl}");
-                          exit;
+                            echo "<script>location.href = '{$this->redirectUrl}?code=400&error_name=InvalidParameterException&message={$errorMessage}';</script>";
+                            exit;
                         }
-                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Json)");
+                        throw new InvalidParameterException($errorMessage);
                     }
                     break;
                 case 'file':
                     if ($this->inputValue['size'] == 0) {
+                        $errorMessage = $this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Empty Array)";
                         if ($this->redirectUrl) {
-                          header("Location: {$this->redirectUrl}");
-                          exit;
+                            echo "<script>location.href = '{$this->redirectUrl}?code=400&error_name=InvalidParameterException&message={$errorMessage}';</script>";
+                            exit;
                         }
-                        throw new InvalidParameterException("[] : '" . $this->inputValue . "' Not Allowed(Empty Array)");
+                        throw new InvalidParameterException($errorMessage);
                     }
                     break;
                 case 'null':
                     if (is_null($this->inputValue)) {
+                        $errorMessage = $this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Is Null)";
                         if ($this->redirectUrl) {
-                          header("Location: {$this->redirectUrl}");
-                          exit;
+                            echo "<script>location.href = '{$this->redirectUrl}?code=400&error_name=InvalidParameterException&message={$errorMessage}';</script>";
+                            exit;
                         }
-                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Is Null)");
+                        throw new InvalidParameterException($errorMessage);
                     }
                     break;
                 case 'empty':
                     if (empty($this->inputValue)) {
+                        $errorMessage = $this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Is Empty)";
                         if ($this->redirectUrl) {
-                          header("Location: {$this->redirectUrl}");
-                          exit;
+                            echo "<script>location.href = '{$this->redirectUrl}?code=400&error_name=InvalidParameterException&message={$errorMessage}';</script>";
+                            exit;
                         }
-                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Is Null)");
+                        throw new InvalidParameterException($errorMessage);
                     }
                     break;
                 case 'json':
                     if (!is_array(\json_decode($this->inputValue, true)) == true) {
+                        $errorMessage = $this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Json)";
                         if ($this->redirectUrl) {
-                          header("Location: {$this->redirectUrl}");
-                          exit;
+                            echo "<script>location.href = '{$this->redirectUrl}?code=400&error_name=InvalidParameterException&message={$errorMessage}';</script>";
+                            exit;
                         }
-                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Json)");
+                        throw new InvalidParameterException($errorMessage);
                     }
                     $filter = "";
                     break;
                 case 'array':
                     if (!is_array($this->inputValue)) {
+                        $errorMessage = $this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Array)";
                         if ($this->redirectUrl) {
-                          header("Location: {$this->redirectUrl}");
-                          exit;
+                            echo "<script>location.href = '{$this->redirectUrl}?code=400&error_name=InvalidParameterException&message={$errorMessage}';</script>";
+                            exit;
                         }
-                        throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed(Not Array)");
+                        throw new InvalidParameterException($errorMessage);
                     }
                     $filter = "";
                     break;
@@ -355,11 +370,12 @@ class FormValidator
 
             if ($filter) {
                 if (filter_var($this->inputValue, $filter) === false) {
+                    $errorMessage = $this->inputKey . " : '" . $this->inputValue . "' Not Allowed";
                     if ($this->redirectUrl) {
-                      header("Location: {$this->redirectUrl}");
-                      exit;
+                        echo "<script>location.href = '{$this->redirectUrl}?code=400&error_name=InvalidParameterException&message={$errorMessage}';</script>";
+                        exit;
                     }
-                    throw new InvalidParameterException($this->inputKey . " : '" . $this->inputValue . "' Not Allowed");
+                    throw new InvalidParameterException($errorMessage);
                 }
             }
 
