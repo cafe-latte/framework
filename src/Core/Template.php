@@ -13,6 +13,7 @@
 namespace CafeLatte\Core;
 
 use CafeLatte\Exception\TemplateFailException;
+use Exception;
 
 /**
  * @author Thorpe Lee <koangbok@gmail.com>
@@ -37,7 +38,7 @@ class Template
      * @param array $arg
      * @return $this
      */
-    public function setDefine(array $arg)
+    public function setDefine(array $arg): Template
     {
         foreach ($arg as $fid => $htmlFileName) {
             $this->template[$fid] = array('tpl', $htmlFileName);
@@ -49,9 +50,10 @@ class Template
      * 변수및 배열등을 담는다.
      *
      * @param string $arg
-     * @return string|array $value
+     * @param $value
+     * @return $this
      */
-    public function setAssign(string $arg, $value)
+    public function setAssign(string $arg, $value): Template
     {
         $this->var['templateData'][$arg] = $value;
         return $this;
@@ -61,7 +63,7 @@ class Template
      * @param $value
      * @return $this
      */
-    public function addAssign($value)
+    public function addAssign($value): Template
     {
         $this->var['templateData'] = $value;
         return $this;
@@ -79,7 +81,7 @@ class Template
      * 템플릿 파일을 실행한다.
      *
      * @param string $fid
-     * @throws \Exception
+     * @throws Exception
      */
     public function execute(string $fid)
     {
@@ -98,16 +100,15 @@ class Template
      * @param string $rPath
      * @return string
      */
-    private function setCompileWithTemplateFile(string $rPath) : string
+    private function setCompileWithTemplateFile(string $rPath): string
     {
         $cplBase = $this->compileDir . '/' . $rPath;
-        $cplPath = $cplBase . '.php';
-        return $cplPath;
+        return $cplBase . '.php';
     }
 
     /**
      * @param string $cplPath
-     * @throws \Exception
+     * @throws Exception
      */
     private function includeTpl(string $cplPath)
     {

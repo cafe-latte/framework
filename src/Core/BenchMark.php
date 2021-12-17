@@ -38,17 +38,16 @@ class BenchMark
      *
      * @return bool
      */
-    public function start()
+    public function start(): bool
     {
         return $this->checkNow('startTime');
     }
 
     /**
      * the end point to calculate a runtime.
-     *
      * @return bool
      */
-    public function end()
+    public function end(): bool
     {
         return $this->checkNow('endTime');
     }
@@ -59,15 +58,13 @@ class BenchMark
      * @param int $precision
      * @return boolean
      */
-    public function getRuntime(int $precision = 10)
+    public function getRuntime(int $precision = 10): bool
     {
         if ($this->startTime == $this::NOT_INITIALIZED || $this->endTime == $this::NOT_INITIALIZED) {
             return FALSE;
         }
 
-        $runTime = round($this->endTime - $this->startTime, $precision);
-
-        return $runTime;
+        return round($this->endTime - $this->startTime, $precision);
     }
 
     /**

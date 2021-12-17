@@ -13,6 +13,8 @@
 namespace CafeLatte\Core;
 
 
+use Exception;
+
 /**
  * @author Thorpe Lee <koangbok@gmail.com>
  */
@@ -165,7 +167,7 @@ class Response extends ResponseOutput
      * @param string $path
      * @return $this
      */
-    public function setPath(string $path)
+    public function setPath(string $path): Response
     {
         $this->path = $path;
         return $this;
@@ -176,7 +178,7 @@ class Response extends ResponseOutput
      * @param array $layout
      * @return $this
      */
-    public function setViewLayout(array $layout)
+    public function setViewLayout(array $layout): Response
     {
         $this->layout = $layout;
         return $this;
@@ -187,7 +189,7 @@ class Response extends ResponseOutput
      * @param string $mainFile
      * @return $this
      */
-    public function setViewFile(string $mainFile)
+    public function setViewFile(string $mainFile): Response
     {
         $this->mainFile = $mainFile;
         return $this;
@@ -197,7 +199,7 @@ class Response extends ResponseOutput
      * @param $body
      * @return $this
      */
-    public function setBodyData($body)
+    public function setBodyData($body): Response
     {
         $this->bodyData = $body;
         return $this;
@@ -207,7 +209,7 @@ class Response extends ResponseOutput
      * @param bool $isBoolean
      * @return $this
      */
-    public function isDisplayCode($isBoolean = true)
+    public function isDisplayCode($isBoolean = true): Response
     {
         $this->isDisplayCode = $isBoolean;
         return $this;
@@ -218,7 +220,7 @@ class Response extends ResponseOutput
      * @param $bodyCode
      * @return $this
      */
-    public function setBodyCode(int $bodyCode = 200)
+    public function setBodyCode(int $bodyCode = 200): Response
     {
         $this->bodyCode = $bodyCode;
         switch ($bodyCode) {
@@ -317,7 +319,7 @@ class Response extends ResponseOutput
      * @param string $returnType
      * @return $this
      */
-    public function setResponseType(string $returnType)
+    public function setResponseType(string $returnType): Response
     {
         $this->responseType = $returnType;
         return $this;
@@ -328,7 +330,7 @@ class Response extends ResponseOutput
      * @param int $statusCode
      * @return $this
      */
-    public function setResponseStatusCode(int $statusCode = 200)
+    public function setResponseStatusCode(int $statusCode = 200): Response
     {
         $this->responseStatusCode = $statusCode;
 
@@ -339,7 +341,7 @@ class Response extends ResponseOutput
      * @param string $statusMessage
      * @return $this
      */
-    public function setResponseStatusMessage(string $statusMessage)
+    public function setResponseStatusMessage(string $statusMessage): Response
     {
         $this->responseStatusMessage = $statusMessage;
 
@@ -351,7 +353,7 @@ class Response extends ResponseOutput
      * @param $redirectUrl
      * @return $this
      */
-    public function setRedirectUrl($redirectUrl)
+    public function setRedirectUrl($redirectUrl): Response
     {
         $this->redirectUrl = $redirectUrl;
         return $this;
@@ -360,6 +362,7 @@ class Response extends ResponseOutput
 
     /**
      * @return null
+     * @throws Exception
      */
     public function run()
     {

@@ -75,7 +75,7 @@ class Config
      * @param string|null $pathValue
      * @param bool $isWritable
      */
-    public function doPathValidate(string $pathValue = null, $isWritable = true)
+    public function doPathValidate(string $pathValue = null, bool $isWritable = true)
     {
         if ($pathValue != null) {
             if (!is_dir($pathValue)) {

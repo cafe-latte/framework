@@ -38,8 +38,7 @@ class Logger implements LoggerInterface
      */
     private static function getFileName(): string
     {
-        $fileName = \date("Y-m-d") . ".txt";
-        return $fileName;
+        return \date("Y-m-d") . ".txt";
     }
 
     /**
@@ -73,7 +72,7 @@ class Logger implements LoggerInterface
                 $this->logLevel = 1;
                 break;
             default:
-                $this->logLevel = 1;
+                $this->logLevel = 0;
                 break;
         }
     }

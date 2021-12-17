@@ -44,7 +44,7 @@ class Router
     }
 
     /**
-     * allow to access via the get request
+     * allow accessing via the get request
      *
      * @param string $pattern
      * @param callable $callback
@@ -57,7 +57,7 @@ class Router
     }
 
     /**
-     * allow to access via the post request
+     * allow accessing via the post request
      *
      * @param string $pattern
      * @param callable $callback
@@ -70,7 +70,7 @@ class Router
     }
 
     /**
-     * allow to access via the delete request
+     * allow accessing via the delete request
      *
      * @param string $pattern
      * @param callable $callback
@@ -83,7 +83,7 @@ class Router
     }
 
     /**
-     * allow to access via the delete request
+     * allow accessing via the delete request
      *
      * @param string $pattern
      * @param callable $callback
@@ -140,7 +140,7 @@ class Router
      *
      * @param callable $callback
      * @param array $params
-     * @return mixed
+     * @return false|mixed
      */
     private static function userCallable(callable $callback, array $params)
     {

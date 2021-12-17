@@ -34,7 +34,7 @@ class ModelView
      * @param $value
      * @return $this
      */
-    public function addViewData($key, $value)
+    public function addViewData($key, $value): ModelView
     {
         if ($key) {
             $this->modelVar[$key] = $value;
@@ -51,7 +51,7 @@ class ModelView
      * @param array $arg
      * @return $this
      */
-    public function setViewLayout(array $arg)
+    public function setViewLayout(array $arg): ModelView
     {
         foreach ($arg as $fid => $htmlFileName) {
             $this->template[$fid] = $htmlFileName;

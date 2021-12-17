@@ -89,7 +89,7 @@ class FormValidator
      * @param $format
      * @return $this
      */
-    public function setFormatValue($format)
+    public function setFormatValue($format): FormValidator
     {
         if (!$this->inputValue) {
             $this->format = $format;
@@ -105,7 +105,7 @@ class FormValidator
      * @param string $value
      * @return $this
      */
-    public function setReplaceValue($key, string $value)
+    public function setReplaceValue($key, string $value): FormValidator
     {
         if ($this->inputValue) {
             $this->inputValue = str_replace($key, $value, $this->inputValue);
@@ -119,7 +119,7 @@ class FormValidator
      * @param string $url
      * @return $this
      */
-    public function setValidationFailUrl(string $url)
+    public function setValidationFailUrl(string $url): FormValidator
     {
         if ($url) {
             $this->redirectUrl = $url;
@@ -135,7 +135,7 @@ class FormValidator
      * @param mixed $rule
      * @return $this
      */
-    public function setRule($rule)
+    public function setRule($rule): FormValidator
     {
         $this->rule = $rule;
 
@@ -149,7 +149,7 @@ class FormValidator
      * @param int $max
      * @return $this
      */
-    public function setMinMaxLength(int $min, int $max)
+    public function setMinMaxLength(int $min, int $max): FormValidator
     {
         if ($min > strlen($this->inputValue) or strlen($this->inputValue) > $max) {
             $errorMessage = $this->inputKey . " : '" . $this->inputValue . "' 의 길이(length)가 작거나 초과 ( {$min} ~ {$max} )";
@@ -210,10 +210,10 @@ class FormValidator
      * WEb Security. protect CSRF, XSS etc.
      *
      *
-     * @param $rule
+     * @param string $rule
      * @return $this
      */
-    public function doProtectXssInject($rule = "remove")
+    public function doProtectXssInject(string $rule = "remove"): FormValidator
     {
         switch ($rule) {
             case "remove":
@@ -241,7 +241,7 @@ class FormValidator
      * @param bool $isNullAble nullable is OK or NOT
      * @return bool|string
      */
-    public function validate($isValidate = true, $isNullAble = true)
+    public function validate(bool $isValidate = true, bool $isNullAble = true)
     {
         if ($isNullAble == true) {
             if ($this->inputValue == null or $this->inputValue == '') {
