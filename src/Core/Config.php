@@ -44,17 +44,23 @@ class Config
             define("LOG_LEVEL", $setting['log']['level']);
             define("LOG_PATH", $setting['log']['path']);
 
-
             define("VIEW_PATH_PHP", $setting['project']['path'] . $setting['template']['output']);
             define("VIEW_PATH_HTML", $setting['project']['path'] . $setting['template']['input']);
-
             define("UPLOAD_PATH", $setting['upload']['path']);
 
             $this->doPathValidate(PROJECT_PATH, false);
-            $this->doPathValidate(VIEW_PATH_HTML, false);
-            $this->doPathValidate(VIEW_PATH_PHP);
-            $this->doPathValidate(UPLOAD_PATH);
-            $this->doPathValidate(LOG_PATH);
+            if ($setting['template']['on_off'] == 'on') {
+                $this->doPathValidate(VIEW_PATH_HTML, false);
+                $this->doPathValidate(VIEW_PATH_PHP);
+            }
+
+            if ($setting['upload']['on_off'] == 'on') {
+                $this->doPathValidate(UPLOAD_PATH);
+            }
+
+            if ($setting['log']['on_off'] == 'on') {
+                $this->doPathValidate(LOG_PATH);
+            }
 
         } catch (ConfigSettingFailException  $e) {
             header("HTTP/1.0 400 ERROR_FAIL_CONFIG_SETTING");

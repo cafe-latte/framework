@@ -31,7 +31,7 @@ Class Date
     }
 
     /**
-     * get this year,month,date and  and return it
+     * get this year,month,date and return it
      *
      * @return mixed
      */
