@@ -62,7 +62,6 @@ class ModelView
     /**
      * to get view data for template
      *
-     * @return mixed
      */
     public function getViewData()
     {
@@ -74,7 +73,7 @@ class ModelView
      *
      * @return array
      */
-    public function getViewLayout()
+    public function getViewLayout(): array
     {
         return $this->template;
     }
