@@ -87,13 +87,6 @@ class Config
             if (!is_dir($pathValue)) {
                 throw new ConfigSettingFailException("`{$pathValue}` does NOT existed", '400');
             }
-
-            if ($isWritable == true) {
-                if (!is_writable($pathValue)) {
-                    throw new ConfigSettingFailException("`{$pathValue}`is NOT writable", '400');
-                }
-            }
-
         }
     }
 }
